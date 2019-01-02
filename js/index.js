@@ -1,80 +1,78 @@
 // static musicList
 var musicList = [
   {
-    src: '//cloud.hunger-valley.com/music/玫瑰.mp3',
+    url: '//cloud.hunger-valley.com/music/玫瑰.mp3',
     name: '玫瑰',
     pic: '//img.jammyfm.com/wordpress/wp-content/uploads/2017/10/201710202139057644.jpg',
-    auther: '贰佰'
+    author: '贰佰'
   },
   {
-    src: '//cloud.hunger-valley.com/music/ifyou.mp3',
+    url: '//cloud.hunger-valley.com/music/ifyou.mp3',
     name: 'IF YOU',
     pic: '//i2.wp.com/www.kpopscene.com/wp-content/uploads/2015/12/Bigbang.jpg',
-    auther: 'Big Bang'
+    author: 'Big Bang'
   }
   
-]
-// init audio 
-function initAudio(res) {
- window.musicList = JSON.parse(res).data.musicList;
- window.audioObject = new Audio(musicList[0].url);
- window.currentSong = 0;
- audioObject.autoPlay = true; 
- changeInfo(musicList[0]);
+];
+var music = new Audio();
+music.autoplay = true;
+var musicIndex = 0;
+music.onplaying = function(){
+  timer = setInterval(function(){
+    updateProgress()
+  }, 1000)
+};
+music.onpause = function(){
+  console.log('pause')
+  clearInterval(timer)
 }
 // 请求歌单
-function getMusicList(callback) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET','//easy-mock.com/mock/5ad86860c1196e47fdb233cc/mock/musicPlayer',true);
-  xhr.send();
-  xhr.onload = function() {
-    if(xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
-      callback(xhr.responseText);
-    } else {
-      console.log('server error')
-    }
-  }
-}
+// function getMusicList(callback) {
+//   var xhr = new XMLHttpRequest();
+//   xhr.open('GET','//easy-mock.com/mock/5ad86860c1196e47fdb233cc/mock/musicPlayer',true);
+//   xhr.send();
+//   xhr.onload = function() {
+//     if(xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+//       callback(xhr.responseText);
+//     } else {
+//       console.log('server error')
+//     }
+//   }
+// }
 
 // song detail info
-function changeInfo(song) {
-  audioObject.src = musicList[currentSong].url;
-  window.DOM.name.innerText = song.name;
-  window.DOM.author.innerText = song.author;
-  console.log(song)
+function changeMusic(song) {
+  music.src = musicList[musicIndex].url;
+  DOM.name.innerText = song.name;
+  DOM.author.innerText = song.author;
   document.addEventListener('mouseover',function(){  
     console.log('document')
-    if(audioObject.networkState === 3) {
-      setTimeout(next(),1000);
-    }
-  audioObject.addEventListener("canplaythrough",function(){
-    console.log('play')
-    audioObject.play();
-    window.DOM.timer.innerText = formatTime(audioObject.duration);
-  },false);
-  audioObject.addEventListener("error",function(){
-    console.log('error')
-    setTimeout(next(),1000);
-  },false);
+    music.play();
   });
  }
- function queryDom() {
-   window.DOM = {
-    name: $('.music .info .name'),
-    author: $('.music .info .author'),
-    active: $('.player .progress .active'),
-    timer: $('.player .tools .timer')
-   }
-   return DOM;
- }
-
+ 
  // get next music
  function next() {
-  currentSong = ++currentSong % musicList.length;
-  changeInfo(musicList[currentSong]);
- }
- // select dom
- function $(selector) {
+   musicIndex = ++musicIndex % musicList.length;
+   changeMusic(musicList[musicIndex]);
+  }
+  function updateProgress(){
+    var percent = (music.currentTime/music.duration)*100+'%';
+    DOM.active.style.width = percent;
+    DOM.timer.innerText = formatTime(music.currentTime);
+  }
+  function queryDom() {
+    window.DOM = {
+     name: $('.music .info .name'),
+     author: $('.music .info .author'),
+     active: $('.player .progress .active'),
+     timer: $('.player .tools .timer'),
+     playBtn: $('.music .control .playBtn')
+    }
+    return DOM;
+  }
+  // select dom
+  function $(selector) {
    return document.querySelector(selector);
  }
  function formatTime(time) {
@@ -82,12 +80,17 @@ function changeInfo(song) {
     var sec = time % 60 < 10 ? '0' + parseInt(time % 60) : parseInt(time % 60);
     return min + ':' + sec;
  }
-//  function loadingStatus() {
-//    if(!audioObject.currentTime) {
 
-//    }
-//  }
-window.onload = function() {
-  queryDom();
-  // getMusicList(initAudio);
+ window.onload = function() {
+    queryDom();
+    changeMusic(musicList[musicIndex]);
+    DOM.playBtn.onclick = function(){
+    if(DOM.playBtn.classList.contains('icon-pause')){
+      music.pause()
+    }else{
+      music.play()
+    }
+    DOM.playBtn.classList.toggle('icon-pause')
+    DOM.playBtn.classList.toggle('icon-play')
+  }
 }

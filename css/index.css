@@ -4,6 +4,7 @@
   overflow: hidden;
   background: rgb(0,0,0,.3);
   color: #ee8a87;
+  user-select: none;
 }
 .musicPlayer {
   width: 300px;
