@@ -1,3 +1,19 @@
+// static musicList
+var musicList = [
+  {
+    src: '//cloud.hunger-valley.com/music/玫瑰.mp3',
+    name: '玫瑰',
+    pic: '//img.jammyfm.com/wordpress/wp-content/uploads/2017/10/201710202139057644.jpg',
+    auther: '贰佰'
+  },
+  {
+    src: '//cloud.hunger-valley.com/music/ifyou.mp3',
+    name: 'IF YOU',
+    pic: '//i2.wp.com/www.kpopscene.com/wp-content/uploads/2015/12/Bigbang.jpg',
+    auther: 'Big Bang'
+  }
+  
+]
 // init audio 
 function initAudio(res) {
  window.musicList = JSON.parse(res).data.musicList;
@@ -28,9 +44,8 @@ function changeInfo(song) {
   console.log(song)
   document.addEventListener('mouseover',function(){  
     console.log('document')
-    console.log(audioObject.networkState)
     if(audioObject.networkState === 3) {
-      next();
+      setTimeout(next(),1000);
     }
   audioObject.addEventListener("canplaythrough",function(){
     console.log('play')
@@ -39,7 +54,7 @@ function changeInfo(song) {
   },false);
   audioObject.addEventListener("error",function(){
     console.log('error')
-    next();
+    setTimeout(next(),1000);
   },false);
   });
  }
@@ -74,5 +89,5 @@ function changeInfo(song) {
 //  }
 window.onload = function() {
   queryDom();
-  getMusicList(initAudio);
+  // getMusicList(initAudio);
 }
