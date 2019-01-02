@@ -28,6 +28,7 @@ function changeInfo(song) {
   console.log(song)
   document.addEventListener('mouseover',function(){  
     console.log('document')
+    console.log(audioObject.networkState)
   audioObject.addEventListener("canplaythrough",function(){
     console.log('play')
     audioObject.play();
