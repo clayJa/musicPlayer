@@ -28,11 +28,11 @@ function changeInfo(song) {
   console.log(song)
   document.addEventListener('mouseover',function(){  
     console.log('document')
-  audio.addEventListener("canplaythrough",function(){
+  audioObject.addEventListener("canplaythrough",function(){
     audioObject.play();
     window.DOM.timer.innerText = formatTime(audioObject.duration);
   },false);
-  audio.addEventListener("error",function(){
+  audioObject.addEventListener("error",function(){
       next();
   },false);
   });
