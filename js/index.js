@@ -13,24 +13,28 @@ function getMusicList(callback) {
 }
 
  // init audio 
- function initAudio() {
-  window.audioObject = new Audio('https://m8.music.126.net/20190101215025/2531b7f86cd3f49d04a325d8511273cc/ymusic/2987/5611/69c5/16ef39280e7cf1ecd8a02250ebc91d07.mp3');
-  window.currentSong = index;
+ function initAudio(res) {
+  window.musicList = JSON.parse(res).data.musicList;
+  window.audioObject = new Audio(musicList[0].url);
+  window.currentSong = 0;
   audioObject.autoPlay = true; 
+  changeInfo(musicList[0]);
 }
 // song detail info
 function changeInfo(song) {
   window.DOM.name.innerText = song.name;
   window.DOM.author.innerText = song.author;
   console.log(song)
-  document.addEventListener('DOMContentLoaded',function(){  
-    console.log('document')
-    audioObject.addEventListener('canplay', function(){
-      console.log('audioObject')
-      audioObject.play();
-      window.DOM.timer.innerText = formatTime(audioObject.duration);
-    })
-  });
+  audioObject.play();
+  window.DOM.timer.innerText = formatTime(audioObject.duration);
+  // document.addEventListener('DOMContentLoaded',function(){  
+  //   console.log('document')
+  //   audioObject.addEventListener('canplay', function(){
+  //     console.log('audioObject')
+  //     audioObject.play();
+  //     window.DOM.timer.innerText = formatTime(audioObject.duration);
+  //   })
+  // });
  }
  function queryDom() {
    window.DOM = {
@@ -57,8 +61,5 @@ function changeInfo(song) {
 //  }
 window.onload = function() {
   queryDom();
-  getMusicList('360706213');
-  if(localStorage.length) {
-    initAudio()
-  }
+  getMusicList(initAudio);
 }
