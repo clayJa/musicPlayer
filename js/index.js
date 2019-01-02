@@ -25,7 +25,7 @@ function changeInfo(song) {
   window.DOM.name.innerText = song.name;
   window.DOM.author.innerText = song.author;
   console.log(song)
-  document.addEventListener('DOMContentLoaded',function(){  
+  document.addEventListener('mouseover',function(){  
     console.log('document')
     audioObject.addEventListener('canplay', function(){
       console.log('audioObject')
