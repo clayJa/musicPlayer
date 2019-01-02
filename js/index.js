@@ -29,6 +29,9 @@ function changeInfo(song) {
   document.addEventListener('mouseover',function(){  
     console.log('document')
     console.log(audioObject.networkState)
+    if(audioObject.networkState === 3) {
+      next();
+    }
   audioObject.addEventListener("canplaythrough",function(){
     console.log('play')
     audioObject.play();
@@ -36,7 +39,7 @@ function changeInfo(song) {
   },false);
   audioObject.addEventListener("error",function(){
     console.log('error')
-      next();
+    next();
   },false);
   });
  }
