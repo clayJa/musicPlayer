@@ -25,16 +25,14 @@ function changeInfo(song) {
   window.DOM.name.innerText = song.name;
   window.DOM.author.innerText = song.author;
   console.log(song)
-  audioObject.play();
-  window.DOM.timer.innerText = formatTime(audioObject.duration);
-  // document.addEventListener('DOMContentLoaded',function(){  
-  //   console.log('document')
-  //   audioObject.addEventListener('canplay', function(){
-  //     console.log('audioObject')
-  //     audioObject.play();
-  //     window.DOM.timer.innerText = formatTime(audioObject.duration);
-  //   })
-  // });
+  document.addEventListener('DOMContentLoaded',function(){  
+    console.log('document')
+    audioObject.addEventListener('canplay', function(){
+      console.log('audioObject')
+      audioObject.play();
+      window.DOM.timer.innerText = formatTime(audioObject.duration);
+    })
+  });
  }
  function queryDom() {
    window.DOM = {
