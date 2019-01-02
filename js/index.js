@@ -22,16 +22,19 @@ function getMusicList(callback) {
 
 // song detail info
 function changeInfo(song) {
+  audioObject.src = musicList[currentSong].url;
   window.DOM.name.innerText = song.name;
   window.DOM.author.innerText = song.author;
   console.log(song)
   document.addEventListener('mouseover',function(){  
     console.log('document')
-    audioObject.addEventListener('canplay', function(){
-      console.log('audioObject')
-      audioObject.play();
-      window.DOM.timer.innerText = formatTime(audioObject.duration);
-    })
+  audio.addEventListener("canplaythrough",function(){
+    audioObject.play();
+    window.DOM.timer.innerText = formatTime(audioObject.duration);
+  },false);
+  audio.addEventListener("error",function(){
+      next();
+  },false);
   });
  }
  function queryDom() {
@@ -42,6 +45,12 @@ function changeInfo(song) {
     timer: $('.player .tools .timer')
    }
    return DOM;
+ }
+
+ // get next music
+ function next() {
+  currentSong = ++currentSong % musicList.length;
+  changeInfo(musicList[currentSong]);
  }
  // select dom
  function $(selector) {
