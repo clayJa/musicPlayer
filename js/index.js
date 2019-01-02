@@ -29,10 +29,12 @@ function changeInfo(song) {
   document.addEventListener('mouseover',function(){  
     console.log('document')
   audioObject.addEventListener("canplaythrough",function(){
+    console.log('play')
     audioObject.play();
     window.DOM.timer.innerText = formatTime(audioObject.duration);
   },false);
   audioObject.addEventListener("error",function(){
+    console.log('error')
       next();
   },false);
   });
