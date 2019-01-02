@@ -1,3 +1,11 @@
+// init audio 
+function initAudio(res) {
+ window.musicList = JSON.parse(res).data.musicList;
+ window.audioObject = new Audio(musicList[0].url);
+ window.currentSong = 0;
+ audioObject.autoPlay = true; 
+ changeInfo(musicList[0]);
+}
 // 请求歌单
 function getMusicList(callback) {
   var xhr = new XMLHttpRequest();
@@ -12,14 +20,6 @@ function getMusicList(callback) {
   }
 }
 
- // init audio 
- function initAudio(res) {
-  window.musicList = JSON.parse(res).data.musicList;
-  window.audioObject = new Audio(musicList[0].url);
-  window.currentSong = 0;
-  audioObject.autoPlay = true; 
-  changeInfo(musicList[0]);
-}
 // song detail info
 function changeInfo(song) {
   window.DOM.name.innerText = song.name;
