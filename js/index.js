@@ -45,6 +45,7 @@ function changeMusic(song) {
   DOM.name.innerText = song.name;
   DOM.author.innerText = song.author;
   DOM.container.style.backgroundImage = 'url('+song.pic+')';
+  music.play();
   if(document.querySelectorAll('.musicList li').length) {
     document.querySelectorAll('.musicList li').forEach(function(dom){
       dom.classList.remove('active');
@@ -61,7 +62,6 @@ function changeMusic(song) {
  // get previous music
  function prev() {
    musicIndex = (musicList.length + --musicIndex) % musicList.length;
-   console.log(musicIndex);
    changeMusic(musicList[musicIndex]);
   }
   function updateProgress(){
