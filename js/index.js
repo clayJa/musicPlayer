@@ -23,7 +23,6 @@ music.onplaying = function(){
   }, 1000)
 };
 music.onpause = function(){
-  console.log('pause')
   clearInterval(timer)
 }
 // 请求歌单
@@ -45,15 +44,23 @@ function changeMusic(song) {
   music.src = musicList[musicIndex].url;
   DOM.name.innerText = song.name;
   DOM.author.innerText = song.author;
-  document.addEventListener('mouseover',function(){  
-    console.log('document')
-    music.play();
-  });
+  if(document.querySelectorAll('.musicList li').length) {
+    document.querySelectorAll('.musicList li').forEach(function(dom){
+      dom.classList.remove('active');
+    })
+    $('.musicList li[data-index="'+musicIndex+'"]').classList.add('active');
+  }
  }
  
  // get next music
  function next() {
    musicIndex = ++musicIndex % musicList.length;
+   changeMusic(musicList[musicIndex]);
+  }
+ // get previous music
+ function prev() {
+   musicIndex = (musicList.length + --musicIndex) % musicList.length;
+   console.log(musicIndex);
    changeMusic(musicList[musicIndex]);
   }
   function updateProgress(){
@@ -67,7 +74,12 @@ function changeMusic(song) {
      author: $('.music .info .author'),
      active: $('.player .progress .active'),
      timer: $('.player .tools .timer'),
-     playBtn: $('.music .control .playBtn')
+     playBtn: $('.music .control .playBtn'),
+     nextBtn: $('.music .control .nextBtn'),
+     prevBtn: $('.music .control .prevBtn'),
+     voiceBtn: $('.player .tools .voiceBtn'),
+     musicListBtn: $('.player .tools .musicListBtn'),
+     musicList: $('.container .musicList'),
     }
     return DOM;
   }
@@ -84,13 +96,41 @@ function changeMusic(song) {
  window.onload = function() {
     queryDom();
     changeMusic(musicList[musicIndex]);
-    DOM.playBtn.onclick = function(){
-    if(DOM.playBtn.classList.contains('icon-pause')){
-      music.pause()
-    }else{
-      music.play()
+    DOM.playBtn.onclick = function() {
+      if(DOM.playBtn.classList.contains('icon-pause')){
+        music.pause();
+      }else{
+        music.play();
+      }
+      DOM.playBtn.classList.toggle('icon-pause');
+      DOM.playBtn.classList.toggle('icon-play');
     }
-    DOM.playBtn.classList.toggle('icon-pause')
-    DOM.playBtn.classList.toggle('icon-play')
-  }
+    DOM.nextBtn.onclick = function(){
+      next();
+    }
+    DOM.prevBtn.onclick = function() {
+      prev();
+    }
+    DOM.voiceBtn.onclick = function() {
+      if(music.volume === 1) {
+        music.volume = 0
+      } else {
+        music.volume = 1
+      }
+      DOM.voiceBtn.classList.toggle('icon-sey-voice-b');
+      DOM.voiceBtn.classList.toggle('icon-voice-close');
+    }
+    DOM.musicListBtn.onclick = function() {
+      var htmlContent = '<ul>'; 
+      musicList.forEach(function(item,index){
+        htmlContent += '<li data-index="'+index+'"><span class="name">'+item.name+'</span><span class="author">'+item.author+'</span></li>';
+      });
+      DOM.musicList.innerHTML = htmlContent + '</ul>';
+      DOM.musicList.classList.toggle('show');
+      DOM.musicList.classList.toggle('hide');
+      document.querySelectorAll('.musicList li').forEach(function(dom){
+        dom.classList.remove('active');
+      })
+      $('.musicList li[data-index="'+musicIndex+'"]').classList.add('active');
+    }
 }
