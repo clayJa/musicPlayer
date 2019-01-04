@@ -1,8 +1,12 @@
 .container,html,body {
   height: 100%;
   width: 100%;
+}
+.container {
+  position: relative;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
   overflow: hidden;
-  background: rgb(0,0,0,.3);
   color: #ee8a87;
   user-select: none;
 }
@@ -19,7 +23,7 @@
 .musicList  {
   width: 310px;
   margin: 0 auto;
-  margin-top: 10px;
+  margin-top: 3px;
   background: rgb(255,255,255,.15);
   border-radius: 4px;
   color: rgb(254,76,115,.6);
@@ -72,6 +76,7 @@
 .player .progress {
   position: relative;
   width: 250px;
+  cursor: pointer;
 }
 .player .progress .total {
   width: 100%;

@@ -44,6 +44,7 @@ function changeMusic(song) {
   music.src = musicList[musicIndex].url;
   DOM.name.innerText = song.name;
   DOM.author.innerText = song.author;
+  DOM.container.style.backgroundImage = 'url('+song.pic+')';
   if(document.querySelectorAll('.musicList li').length) {
     document.querySelectorAll('.musicList li').forEach(function(dom){
       dom.classList.remove('active');
@@ -67,6 +68,14 @@ function changeMusic(song) {
     var percent = (music.currentTime/music.duration)*100+'%';
     DOM.active.style.width = percent;
     DOM.timer.innerText = formatTime(music.currentTime);
+    if(music.ended) {
+      if(DOM.loopBtn.classList.contains('icon-danquxunhuan')) {
+        changeMusic(musicList[musicIndex]);
+
+      } else {
+        next();
+      }
+    }
   }
   function queryDom() {
     window.DOM = {
@@ -80,6 +89,10 @@ function changeMusic(song) {
      voiceBtn: $('.player .tools .voiceBtn'),
      musicListBtn: $('.player .tools .musicListBtn'),
      musicList: $('.container .musicList'),
+     progress: $('.player .progress'),
+     progressActive: $('.player .progress .active'),
+     loopBtn: $('.player .tools .loopBtn'),
+     container: $('.container'),
     }
     return DOM;
   }
@@ -133,4 +146,18 @@ function changeMusic(song) {
       })
       $('.musicList li[data-index="'+musicIndex+'"]').classList.add('active');
     }
+    DOM.musicList.onclick = function(e) {
+      musicIndex = e.target.parentNode.getAttribute('data-index');
+      changeMusic(musicList[musicIndex]);
+    }
+    DOM.progress.onclick = function(e) {
+      var percent = e.offsetX/parseInt(getComputedStyle(this).width);
+      music.currentTime = percent * music.duration;
+      DOM.progressActive.style.width = percent * 100 + '%';
+    }
+    DOM.loopBtn.onclick = function() {
+      DOM.loopBtn.classList.toggle('icon-xunhuanbofang');
+      DOM.loopBtn.classList.toggle('icon-danquxunhuan');
+    }
+    
 }
