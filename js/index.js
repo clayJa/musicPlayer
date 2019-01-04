@@ -77,6 +77,7 @@ function changeMusic(song) {
       }
     }
   }
+  // get dom
   function queryDom() {
     window.DOM = {
      name: $('.music .info .name'),
@@ -100,6 +101,7 @@ function changeMusic(song) {
   function $(selector) {
    return document.querySelector(selector);
  }
+ // format time
  function formatTime(time) {
     var min = time / 60 < 10 ? '0' + parseInt(time / 60) : parseInt(time / 60);
     var sec = time % 60 < 10 ? '0' + parseInt(time % 60) : parseInt(time % 60);
@@ -108,7 +110,9 @@ function changeMusic(song) {
 
  window.onload = function() {
     queryDom();
+    //init music
     changeMusic(musicList[musicIndex]);
+    // play or pause
     DOM.playBtn.onclick = function() {
       if(DOM.playBtn.classList.contains('icon-pause')){
         music.pause();
@@ -118,12 +122,15 @@ function changeMusic(song) {
       DOM.playBtn.classList.toggle('icon-pause');
       DOM.playBtn.classList.toggle('icon-play');
     }
+    // next song
     DOM.nextBtn.onclick = function(){
       next();
     }
+    // previous song
     DOM.prevBtn.onclick = function() {
       prev();
     }
+    // turn on / off music
     DOM.voiceBtn.onclick = function() {
       if(music.volume === 1) {
         music.volume = 0
@@ -133,6 +140,7 @@ function changeMusic(song) {
       DOM.voiceBtn.classList.toggle('icon-sey-voice-b');
       DOM.voiceBtn.classList.toggle('icon-voice-close');
     }
+    // show song list
     DOM.musicListBtn.onclick = function() {
       var htmlContent = '<ul>'; 
       musicList.forEach(function(item,index){
@@ -146,15 +154,18 @@ function changeMusic(song) {
       })
       $('.musicList li[data-index="'+musicIndex+'"]').classList.add('active');
     }
+    // change music by list
     DOM.musicList.onclick = function(e) {
       musicIndex = e.target.parentNode.getAttribute('data-index');
       changeMusic(musicList[musicIndex]);
     }
+    // progress update
     DOM.progress.onclick = function(e) {
       var percent = e.offsetX/parseInt(getComputedStyle(this).width);
       music.currentTime = percent * music.duration;
       DOM.progressActive.style.width = percent * 100 + '%';
     }
+    // loop method
     DOM.loopBtn.onclick = function() {
       DOM.loopBtn.classList.toggle('icon-xunhuanbofang');
       DOM.loopBtn.classList.toggle('icon-danquxunhuan');
